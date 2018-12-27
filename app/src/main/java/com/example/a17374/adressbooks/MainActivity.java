@@ -13,8 +13,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(
-                MainActivity.this,android.R.layout.simple_list_item_1,data  );
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,data  );
         ListView listView=(ListView)findViewById(R.id.lv_main);
         listView.setAdapter(adapter);
     }
