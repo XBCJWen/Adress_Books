@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class PersonDao2  {
     private PersonSQLiteOpenHelper helper;
 
-    public PersonDao2(Context context) {
+    public PersonDao2(MainActivity context) {
         helper=new PersonSQLiteOpenHelper(context);
     }
     public  long add(String name ,String number ,int money){
