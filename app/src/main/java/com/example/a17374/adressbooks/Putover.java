@@ -1,7 +1,9 @@
 package com.example.a17374.adressbooks;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,11 +28,13 @@ public class Putover extends AppCompatActivity {
         btn_over.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent();
-                intent.putExtra("name",name.getText().toString().trim());
-                intent.putExtra("phone",phone.getText().toString().trim());
+                Uri  uri=Uri.parse("content://cn.itcast.db.personprovider/insert");
+                PersonDBProvider personDBProvider=new PersonDBProvider();
+                ContentValues values=new ContentValues();
+                values.put("name",String.valueOf(name.getText().toString().trim()));
+                values.put("number",String.valueOf(phone.getText().toString().trim()));
 
-            finish();
+                personDBProvider.insert(uri,values);
             }
         });
 

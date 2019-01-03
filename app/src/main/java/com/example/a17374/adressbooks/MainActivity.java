@@ -1,7 +1,9 @@
 package com.example.a17374.adressbooks;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +20,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +32,10 @@ import java.util.Random;
 public class MainActivity extends Activity {
     private ListView lv;
     private List<Person> persons;
+    private Button  search;
+    private  Button clrean;
+    private  EditText e_search;
+    private  PersonSQLiteOpenHelper helper;
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -43,8 +50,66 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        lv = (ListView) findViewById(R.id.listview);
+        lv =  findViewById(R.id.listview);
         Button btnput=findViewById(R.id.btn_put);
+        search=findViewById(R.id.btn_search);
+        clrean=findViewById(R.id.btn_del);
+        e_search=findViewById(R.id.entTxt_search);
+
+        lv.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(),"sdf",Toast.LENGTH_SHORT);
+            }
+        });
+
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder dialog=new AlertDialog.Builder(MainActivity.this);
+                dialog.setTitle("通讯录");
+                dialog.setMessage("确定要删除这个联系人吗？");
+                dialog.setCancelable(false);
+                dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(),"删除成功",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                return false;
+            }
+        });
+
+
+
+        clrean.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                e_search.setText(null);
+            }
+        });
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void onClick(View v) {
+                Uri uri=Uri.parse("content://cn.itcast.db.personprovider/query");
+
+           PersonDBProvider p=new PersonDBProvider();
+                p.query(uri,new String []{"name"},"name=?",null,null,null);
+                ListView listView=findViewById(R.id.listview);
+                MyAdapter myAdapter=new MyAdapter();
+                listView.setAdapter(myAdapter);
+            }
+        });
+
         btnput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

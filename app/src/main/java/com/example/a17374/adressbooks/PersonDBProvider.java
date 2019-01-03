@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import static android.app.PendingIntent.getActivity;
+
 public class PersonDBProvider extends ContentProvider {
     private static UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
     private static final int INSERT = 1;
@@ -28,14 +30,13 @@ public class PersonDBProvider extends ContentProvider {
     }
 
     public boolean onCreate() {
-        helper = new PersonSQLiteOpenHelper(getContext());
+    helper = new PersonSQLiteOpenHelper(putContext.getContext());
         return false;
     }
 
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         if (matcher.match(uri) == QUERY) {
             SQLiteDatabase db = helper.getReadableDatabase();
-
             Cursor cursor = db.query("person", projection, selection, selectionArgs, null, null, null, sortOrder);
             return cursor;
         } else if (matcher.match(uri) == QUERYONE) {
@@ -44,7 +45,6 @@ public class PersonDBProvider extends ContentProvider {
             Cursor cursor = db.query("person", projection, "id=?", new String[]{id + ""}, null, null, null);
             return cursor;
         } else {
-
                 throw new IllegalArgumentException("路径不匹配，不能执行插入操作");
 
         }
