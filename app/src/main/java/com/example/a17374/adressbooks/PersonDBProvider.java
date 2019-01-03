@@ -23,7 +23,6 @@ public class PersonDBProvider extends ContentProvider {
         matcher.addURI("cn.itcast.db.personprovider", "delete", DELETE);
         matcher.addURI("cn.itcast.db.personprovider", "update", UPDATE);
         matcher.addURI("cn.itcast.db.personprovider", "query", QUERY);
-
         matcher.addURI("cn.itcast.db.personprovider", "query/#", QUERYONE);
 
     }

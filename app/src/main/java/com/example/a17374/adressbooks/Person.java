@@ -40,8 +40,9 @@ public class Person {
     public String toString() {
         return "Person{" +
                 "id=" + id +
-                ", number=" + number +
                 ", name=" + name +
+                ", number=" + number +
+
                 '}';
     }
 

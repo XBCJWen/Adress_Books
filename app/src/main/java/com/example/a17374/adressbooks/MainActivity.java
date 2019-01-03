@@ -1,5 +1,6 @@
 package com.example.a17374.adressbooks;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private ListView lv;
     private List<Person> persons;
 
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
             private void AddData() {
                 PersonDao2 dao = new PersonDao2(this);
                 long number = 885900000;
+                Intent intent=getIntent();
+                intent.getData();
                 Random random = new Random();
                 for (int i = 0; i < 10; i++) {
                     dao.add("wangwu" + i, Long.toString(number + i), random.nextInt(5000));
@@ -99,13 +102,11 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public int getCount() {
-
                     return persons.size();
                 }
 
                 public Object getItem(int position) {
                     return persons.get(position);
-
                 }
 
                 @Override
@@ -118,11 +119,10 @@ public class MainActivity extends AppCompatActivity {
                     Person person = persons.get(position);
                     View view = View.inflate(MainActivity.this, R.layout.activity_lv, null);
                     TextView tv_name = (TextView) view.findViewById(R.id.name);
-                    tv_name.setText("姓名：" + person.getName());
-                    TextView tv_phone = (TextView) view.findViewById(R.id.moble);
-                    tv_phone.setText("电话：" + person.getNumber());
+                    tv_name.setText("姓名：" + person.getNumber());
+                    TextView tv_phone = (TextView) view.findViewById(R.id.phone);
+                    tv_phone.setText("电话：" + person.getName());
                     return view;
-
                 }
             }
 }
