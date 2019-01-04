@@ -34,7 +34,7 @@
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/btn_del"
+            android:id="@+id/btn_sc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:drawable/ic_input_delete" />
@@ -64,7 +64,6 @@
                 android:id="@+id/listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
                 />
         </RelativeLayout>
 
@@ -78,7 +77,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            android:focusable="false"
             />
     </android.support.constraint.ConstraintLayout>
 

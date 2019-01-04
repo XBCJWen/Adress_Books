@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class PersonSQLiteOpenHelper extends SQLiteOpenHelper {
-        Context context1=putContext.getContext();
     public PersonSQLiteOpenHelper(Context context) {
         super(context,"person.db",null,3);
     }
