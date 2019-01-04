@@ -2,8 +2,14 @@ package com.example.a17374.adressbooks;
 
 public class Person {
     private int id;
-    private String number;
     private String name;
+    private String number;
+
+    public Person(int id, String name, String number) {
+        this.id = id;
+        this.name = name;
+        this.number = number;
+    }
 
     public int getId() {
         return id;
@@ -11,14 +17,6 @@ public class Person {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
     }
 
     public String getName() {
@@ -29,20 +27,19 @@ public class Person {
         this.name = name;
     }
 
-
-    public Person(int id, String number, String name) {
-        this.id = id;
-        this.number = number;
-        this.name = name;
+    public String getNumber() {
+        return number;
     }
 
+    public void setNumber(String number) {
+        this.number = number;
+    }
     @Override
     public String toString() {
         return "Person{" +
                 "id=" + id +
-                ", name=" + name +
-                ", number=" + number +
-
+                ", name='" + name + '\'' +
+                ", number='" + number + '\'' +
                 '}';
     }
 

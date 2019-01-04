@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -52,8 +53,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.CALL_PHONE}, 1);
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CALL_PHONE}, 1);
         lv =  findViewById(R.id.listview);
         Button btnput=findViewById(R.id.btn_put);
         search=findViewById(R.id.btn_search);
@@ -68,33 +68,7 @@ public class MainActivity extends Activity {
         });
 
 
-        clrean.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                e_search.setText(null);
-            }
-        });
 
-        search.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onClick(View v) {
-                Uri uri=Uri.parse("content://cn.itcast.db.personprovider/query");
-                Cursor cursor=getContentResolver().query(uri,new String []{"name"},"name=?",null,null,null);
-                if (cursor !=null || cursor.moveToFirst()){Log.d("cursor" ,"：不为空");
-                cursor.moveToFirst();
-                while(cursor.moveToNext()  ) {Log.d("cursor" ,"：不");
-                    String name=cursor.getString(cursor.getColumnIndex("name"));
-                    String phone=cursor.getString(cursor.getColumnIndex("number"));
-                    Log.d("cursor" ,name);
-                   Log.d("cursor" ,phone);
-                }
-                cursor.close();
-                }else {
-                    Toast.makeText(MainActivity.this, "联系人不存在", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         btnput.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,7 +137,7 @@ public class MainActivity extends Activity {
                     Button lv_query=(Button) view.findViewById(R.id.btn_xg);
                     Button lv_phone=(Button) view.findViewById(R.id.btn_phome);
 
-                    TextView tv_name = (TextView) view.findViewById(R.id.name);
+                    final TextView tv_name = (TextView) view.findViewById(R.id.name);
                     final TextView tv_phone = (TextView) view.findViewById(R.id.phone);
                     lv_phone.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -190,14 +164,46 @@ public class MainActivity extends Activity {
                     lv_query.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(MainActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
+                            String phone=person.getNumber();
+                            String name=person.getName();
+                            Intent intent=new Intent(MainActivity.this,activity_query.class);
+                            Log.d("name",name);
+                            intent.putExtra("name",name);
+                            intent.putExtra("phone",phone);
+                            startActivity(intent);
                         }
                     });
 
-                    tv_name.setText("姓名：" + person.getNumber());
+                    tv_name.setText("姓名：" + person.getName());
 
-                    tv_phone.setText("电话：" + person.getName());
+                    tv_phone.setText("电话：" + person.getNumber());
+                    clrean.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            e_search.setText(null);
+                        }
+                    });
 
+                    search.setOnClickListener(new View.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                        @Override
+                        public void onClick(View v) {
+
+                            String search=String.valueOf(e_search.getText().toString().trim());
+                            Uri uri=Uri.parse("content://cn.itcast.db.personprovider/query");
+                            Cursor cursor=getContentResolver().query(uri,null,"name=?", new String[]{search},null);
+                            if (cursor !=null){
+                                while(cursor.moveToNext()) { Toast.makeText(MainActivity.this, "df", Toast.LENGTH_SHORT).show();
+                                    String name=cursor.getString(cursor.getColumnIndex("name"));
+                                    String phone=cursor.getString(cursor.getColumnIndex("phone"));
+                                }
+                                adapter.notifyDataSetChanged();
+                                cursor.close();
+                            }else {
+                                Toast.makeText(MainActivity.this, "联系人不存在", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
 
                     return view;
                 }
